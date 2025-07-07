@@ -1,7 +1,7 @@
-/*global WildRydes _config*/
+/*global SwiftRydes _config*/
 
-var WildRydes = window.WildRydes || {};
-WildRydes.map = WildRydes.map || {};
+var SwiftRydes = window.SwiftRydes || {};
+SwiftRydes.map = SwiftRydes.map || {};
 
 (function esriMapScopeWrapper($) {
     require([
@@ -18,7 +18,7 @@ WildRydes.map = WildRydes.map || {};
         Graphic, Point, TextSymbol,
         PictureMarkerSymbol, webMercatorUtils
     ) {
-        var wrMap = WildRydes.map;
+        var srMap = SwiftRydes.map;
 
         var map = new Map({ basemap: 'gray-vector' });
 
@@ -48,7 +48,7 @@ WildRydes.map = WildRydes.map || {};
         var unicornGraphic;
 
         function updateCenter(newValue) {
-            wrMap.center = {
+            srMap.center = {
                 latitude: newValue.latitude,
                 longitude: newValue.longitude
             };
@@ -57,7 +57,7 @@ WildRydes.map = WildRydes.map || {};
         function updateExtent(newValue) {
             var min = webMercatorUtils.xyToLngLat(newValue.xmin, newValue.ymin);
             var max = webMercatorUtils.xyToLngLat(newValue.xmax, newValue.ymax);
-            wrMap.extent = {
+            srMap.extent = {
                 minLng: min[0],
                 minLat: min[1],
                 maxLng: max[0],
@@ -73,17 +73,17 @@ WildRydes.map = WildRydes.map || {};
         });
 
         view.on('click', function handleViewClick(event) {
-            wrMap.selectedPoint = event.mapPoint;
+            srMap.selectedPoint = event.mapPoint;
             view.graphics.remove(pinGraphic);
             pinGraphic = new Graphic({
                 symbol: pinSymbol,
-                geometry: wrMap.selectedPoint
+                geometry: srMap.selectedPoint
             });
             view.graphics.add(pinGraphic);
-            $(wrMap).trigger('pickupChange');
+            $(srMap).trigger('pickupChange');
         });
 
-        wrMap.animate = function animate(origin, dest, callback) {
+        srMap.animate = function animate(origin, dest, callback) {
             var startTime;
             var step = function animateFrame(timestamp) {
                 var progress;
@@ -115,7 +115,7 @@ WildRydes.map = WildRydes.map || {};
             requestAnimationFrame(step);
         };
 
-        wrMap.unsetLocation = function unsetLocation() {
+        srMap.unsetLocation = function unsetLocation() {
             view.graphics.remove(pinGraphic);
         };
     });
